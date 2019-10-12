@@ -1,0 +1,5 @@
+name: CosmicFunds
+version: @version@
+main: net.splodgebox.cosmicfunds.CosmicFunds
+api-version: 1.13
+authors: [Splodgebox]

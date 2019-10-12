@@ -1,0 +1,17 @@
+Funds:
+  fix:
+    amount: 100000
+    commands:
+      - 'fix'
+      - 'repair'
+    message: "&6&lUnlock /fix [&7%percent%%&6&l] &2&l100k"
+  heal:
+    amount: 200000
+    commands:
+      - 'heal'
+    message: "&6&lUnlock /heal [&7%percent%%&6&l] &2&l200k"
+
+Settings:
+  colors:
+    primary: "&6"
+    secondary: "&e"

@@ -1,0 +1,81 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+
+    dependencies {
+        classpath "com.github.jengelman.gradle.plugins:shadow:4.0.0"
+    }
+}
+
+
+plugins {
+    id 'net.ltgt.apt' version '0.10'
+}
+apply plugin: "com.github.johnrengelman.shadow"
+apply plugin: 'java'
+
+group = pluginGroup
+version = pluginVersion
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+
+repositories {
+    mavenCentral()
+    maven {
+        name = 'spigotmc-repo'
+        url = 'https://hub.spigotmc.org/nexus/content/groups/public/'
+    }
+    maven {
+        name = 'sonatype'
+        url = 'https://oss.sonatype.org/content/groups/public/'
+    }
+    flatDir {
+        dirs './/Spigot'
+    }
+    maven {
+        url "http://repo.extendedclip.com/content/repositories/placeholderapi/"
+    }
+    maven { 
+        url = "https://repo.aikar.co/content/groups/aikar/"
+    }
+    maven {
+        url = "https://hub.spigotmc.org/nexus/content/groups/public/"
+    }
+    maven { 
+        url 'https://jitpack.io'
+    }
+}
+
+compileJava {
+    options.compilerArgs += ["-parameters"]
+    options.fork = true
+    options.forkOptions.executable = 'javac'
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+    compileOnly 'org.spigotmc:spigot-api:1.14.4-R0.1-SNAPSHOT'
+    compileOnly 'org.projectlombok:lombok:1.18.10'
+    annotationProcessor 'org.projectlombok:lombok:1.18.10'
+    compile "co.aikar:acf-core:0.5.0-SNAPSHOT"
+    compile "co.aikar:acf-paper:0.5.0-SNAPSHOT"
+    compileOnly "com.github.MilkBowl:VaultAPI:1.7"
+}
+
+shadowJar {
+    relocate 'co.aikar.commands', 'net.splodgebox.cosmicfunds.acf'
+    relocate 'co.aikar.timings.lib', 'net.splodgebox.cosmicfunds.acf'
+}
+
+import org.apache.tools.ant.filters.ReplaceTokens
+
+processResources {
+    from(sourceSets.main.resources.srcDirs) {
+        filter ReplaceTokens, tokens: [version: version]
+    }
+}
+
+build.dependsOn shadowJar
