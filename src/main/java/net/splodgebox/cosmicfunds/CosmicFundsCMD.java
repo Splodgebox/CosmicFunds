@@ -11,6 +11,7 @@ import net.milkbowl.vault.economy.EconomyResponse;
 import net.splodgebox.cosmicfunds.manager.DataManager;
 import net.splodgebox.cosmicfunds.utils.Chat;
 import net.splodgebox.cosmicfunds.utils.Message;
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -21,27 +22,25 @@ import java.util.Collections;
 public class CosmicFundsCMD extends BaseCommand {
 
     @Default
+    @CommandPermission("CosmicFunds.view")
     public void sendDefault(CommandSender commandSender) {
         Chat.msg(commandSender, Message.FUNDS_MAIN.toString().replace("%amount%",
                 new DecimalFormat("#,###").format(CosmicFunds.getInstance().totalFunds)));
-        CosmicFunds.getInstance().getConfig().getConfigurationSection("Funds").getKeys(false).forEach(s -> {
+        for (String s : CosmicFunds.getInstance().getConfig().getConfigurationSection("Funds").getKeys(false)) {
             long amount = CosmicFunds.getInstance().getConfig().getLong("Funds." + s + ".amount");
-            double percentage = (CosmicFunds.getInstance().totalFunds / amount) * 10;
+            long total = CosmicFunds.getInstance().totalFunds;
+            float percentage = (((float)total) / amount) *100;
             if (percentage > 100) percentage = 100;
-            Chat.msg(commandSender, CosmicFunds.getInstance().getConfig().getString("Funds." + s + ".message")
-                    .replace("%percent%", new DecimalFormat("#,###.##").format(percentage))
-            );
+            Chat.msg(commandSender, CosmicFunds.getInstance().getConfig().getString("Funds." + s + ".message").replace("%percent%", new DecimalFormat("###.##").format(percentage)));
             int completedBar = (int) percentage;
             int notCompleted = 100 - completedBar;
 
-            Chat.msg(commandSender, Strings.repeat(
-                    CosmicFunds.getInstance().getConfig().getString("Settings.colors.secondary") + ":", completedBar) +
-                    Strings.repeat(CosmicFunds.getInstance().getConfig().getString("Settings.colors.primary") + ":", notCompleted));
-
-        });
+            Chat.msg(commandSender, Strings.repeat(CosmicFunds.getInstance().getConfig().getString("Settings.colors.secondary") + ";", completedBar) + Strings.repeat(CosmicFunds.getInstance().getConfig().getString("Settings.colors.primary") + ";", notCompleted));
+        }
     }
 
     @Subcommand("add|deposit")
+    @CommandPermission("CosmicFunds.deposit")
     public void addFands(CommandSender commandSender, long amount) {
         Player player = (Player) commandSender;
         if (CosmicFunds.getEcon().has(player, amount)) {
@@ -63,5 +62,13 @@ public class CosmicFundsCMD extends BaseCommand {
         CosmicFunds.getInstance().reloadConfig();
         new DataManager(CosmicFunds.getInstance()).checkCompleted();
         Message.CONFIGURATION_RELOAD.msg(commandSender);
+    }
+
+    @Subcommand("reset")
+    @CommandPermission("CosmicFunds.reset")
+    public void resetFunds(CommandSender commandSender) {
+        CosmicFunds.getInstance().totalFunds = 0;
+        CosmicFunds.getInstance().saveTotal();
+        Message.FUNDS_RESET.msg(commandSender);
     }
 }

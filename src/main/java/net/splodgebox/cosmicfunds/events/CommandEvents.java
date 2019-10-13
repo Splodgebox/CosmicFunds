@@ -16,7 +16,7 @@ public class CommandEvents implements Listener {
         for (String string : CosmicFunds.getInstance().fundsCompleted.keySet()) {
             if (!CosmicFunds.getInstance().fundsCompleted.get(string)){
                 List<String> commands = CosmicFunds.getInstance().getConfig().getStringList("Funds." + string + ".commands");
-                if (commands.contains(event.getMessage())) {
+                if (commands.contains(event.getMessage().replace("/", ""))) {
                     Message.FUNDS_COMMANDS.msg(event.getPlayer());
                     event.setCancelled(true);
                     return;

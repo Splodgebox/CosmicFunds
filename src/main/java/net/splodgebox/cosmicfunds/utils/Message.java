@@ -19,6 +19,7 @@ public enum Message {
     FUNDS_COMMANDS("&c&l(!) &cYou cannot execute that command until it is unlocked in /fund"),
     FUNDS_REMOVED("&c&l- $%amount%"),
     FUNDS_NOT_ENOUGH("&c&l(!) &cYou do not have enough to do that!"),
+    FUNDS_RESET("&c&L(!) &cYou have reset all the funds on this server!"),
     CONFIGURATION_RELOAD("&6&l(!) &eConfiguration Files have been reloaded!"),;
 
     private String path;

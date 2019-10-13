@@ -6,6 +6,7 @@
     <JAVADOC />
     <SOURCES>
       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/co.aikar/acf-bukkit/0.5.0-SNAPSHOT/8757d220e15c2bb3549af97b26f1837f931e6ed9/acf-bukkit-0.5.0-SNAPSHOT-sources.jar!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/co.aikar/acf-bukkit/0.5.0-SNAPSHOT/d9264b320fe48382e8857a48a337805ca29fe86a/acf-bukkit-0.5.0-SNAPSHOT-sources.jar!/" />
     </SOURCES>
   </library>
 </component>
