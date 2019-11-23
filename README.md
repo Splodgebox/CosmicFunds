@@ -6,4 +6,4 @@ You can create your own targets and customise the amount of money required. You 
 
 ## Donations
 If you like this resource and would like to donate then please feel free to do so this will help me to make more free plugins like this one
-[Click Here](https://paypal.me/splodgedev)
+[Click Here](https://paypal.me/splodgeboxdev)
