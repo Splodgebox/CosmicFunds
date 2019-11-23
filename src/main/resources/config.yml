@@ -12,6 +12,7 @@ Funds:
     message: "&6&lUnlock /heal [&7%percent%%&6&l] &2&l200k"
 
 Settings:
+  min-deposit: 10000
   colors:
     primary: "&6"
     secondary: "&e"

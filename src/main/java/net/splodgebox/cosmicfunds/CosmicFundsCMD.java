@@ -43,6 +43,16 @@ public class CosmicFundsCMD extends BaseCommand {
     @CommandPermission("CosmicFunds.deposit")
     public void addFands(CommandSender commandSender, long amount) {
         Player player = (Player) commandSender;
+        long minAmount;
+        try {
+            minAmount = CosmicFunds.getInstance().getConfig().getLong("Settings.min-deposit");
+        } catch (NullPointerException exception) {
+          minAmount = 10000;
+        }
+        if (amount < minAmount) {
+            Message.DEPOSIT_LOW.msg(player);
+            return;
+        }
         if (CosmicFunds.getEcon().has(player, amount)) {
             EconomyResponse economyResponse = CosmicFunds.getEcon().withdrawPlayer(player, amount);
             if (economyResponse.transactionSuccess()) {

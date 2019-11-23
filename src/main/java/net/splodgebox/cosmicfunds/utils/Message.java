@@ -20,6 +20,7 @@ public enum Message {
     FUNDS_REMOVED("&c&l- $%amount%"),
     FUNDS_NOT_ENOUGH("&c&l(!) &cYou do not have enough to do that!"),
     FUNDS_RESET("&c&L(!) &cYou have reset all the funds on this server!"),
+    DEPOSIT_LOW("&C&L(!) &cYou cannot a fund deposit lower than $10,000!"),
     CONFIGURATION_RELOAD("&6&l(!) &eConfiguration Files have been reloaded!"),;
 
     private String path;

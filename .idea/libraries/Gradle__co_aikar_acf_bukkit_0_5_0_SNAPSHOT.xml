@@ -1,12 +1,13 @@
 <component name="libraryTable">
   <library name="Gradle: co.aikar:acf-bukkit:0.5.0-SNAPSHOT">
     <CLASSES>
-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/co.aikar/acf-bukkit/0.5.0-SNAPSHOT/babec6483bb07b0f4dff0b8f3d04b9ebb797c89f/acf-bukkit-0.5.0-SNAPSHOT.jar!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/co.aikar/acf-bukkit/0.5.0-SNAPSHOT/3096b424c82f53e4cf23394a9b570c425ccbbfc1/acf-bukkit-0.5.0-SNAPSHOT.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>
       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/co.aikar/acf-bukkit/0.5.0-SNAPSHOT/8757d220e15c2bb3549af97b26f1837f931e6ed9/acf-bukkit-0.5.0-SNAPSHOT-sources.jar!/" />
       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/co.aikar/acf-bukkit/0.5.0-SNAPSHOT/d9264b320fe48382e8857a48a337805ca29fe86a/acf-bukkit-0.5.0-SNAPSHOT-sources.jar!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/co.aikar/acf-bukkit/0.5.0-SNAPSHOT/d96acd5b4965ad568222b6fb836d287a7fc10b86/acf-bukkit-0.5.0-SNAPSHOT-sources.jar!/" />
     </SOURCES>
   </library>
 </component>
