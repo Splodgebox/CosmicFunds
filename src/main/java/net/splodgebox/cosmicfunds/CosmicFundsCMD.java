@@ -5,43 +5,48 @@ import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Default;
 import co.aikar.commands.annotation.Subcommand;
-import co.aikar.commands.bukkit.contexts.OnlinePlayer;
 import com.google.common.base.Strings;
+import lombok.RequiredArgsConstructor;
 import net.milkbowl.vault.economy.EconomyResponse;
-import net.splodgebox.cosmicfunds.manager.DataManager;
 import net.splodgebox.cosmicfunds.utils.Chat;
 import net.splodgebox.cosmicfunds.utils.Message;
-import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.text.DecimalFormat;
-import java.util.Collections;
 
+@RequiredArgsConstructor
 @CommandAlias("fund|funds|cosmicfunds|cfunds")
 public class CosmicFundsCMD extends BaseCommand {
+
+    private final CosmicFunds plugin;
 
     @Default
     @CommandPermission("CosmicFunds.view")
     public void sendDefault(CommandSender commandSender) {
         Chat.msg(commandSender, Message.FUNDS_MAIN.toString().replace("%amount%",
-                new DecimalFormat("#,###").format(CosmicFunds.getInstance().totalFunds)));
-        for (String s : CosmicFunds.getInstance().getConfig().getConfigurationSection("Funds").getKeys(false)) {
-            long amount = CosmicFunds.getInstance().getConfig().getLong("Funds." + s + ".amount");
-            long total = CosmicFunds.getInstance().totalFunds;
+                new DecimalFormat("#,###").format(plugin.getFundController().getTotalFunds())));
+
+        long total = plugin.getFundController().getTotalFunds();
+        plugin.getFundController().getFundGoals().forEach((s, fundGoal) -> {
+            long amount = fundGoal.getCost();
+
             float percentage = (((float)total) / amount) *100;
             if (percentage > 100) percentage = 100;
-            Chat.msg(commandSender, CosmicFunds.getInstance().getConfig().getString("Funds." + s + ".message").replace("%percent%", new DecimalFormat("###.##").format(percentage)));
+            Chat.msg(commandSender, fundGoal.getMessage()
+                    .replace("%percent%", new DecimalFormat("###.##").format(percentage)));
             int completedBar = (int) percentage;
             int notCompleted = 100 - completedBar;
 
-            Chat.msg(commandSender, Strings.repeat(CosmicFunds.getInstance().getConfig().getString("Settings.colors.secondary") + ";", completedBar) + Strings.repeat(CosmicFunds.getInstance().getConfig().getString("Settings.colors.primary") + ";", notCompleted));
-        }
+            Chat.msg(commandSender, Strings.repeat(
+                    CosmicFunds.getInstance().getConfig().getString("Settings.colors.secondary") + ";", completedBar) +
+                    Strings.repeat(CosmicFunds.getInstance().getConfig().getString("Settings.colors.primary") + ";", notCompleted));
+        });
     }
 
     @Subcommand("add|deposit")
     @CommandPermission("CosmicFunds.deposit")
-    public void addFands(CommandSender commandSender, long amount) {
+    public void addFunds(CommandSender commandSender, long amount) {
         Player player = (Player) commandSender;
         long minAmount;
         try {
@@ -58,7 +63,7 @@ public class CosmicFundsCMD extends BaseCommand {
             if (economyResponse.transactionSuccess()) {
                 Chat.msg(player, Message.FUNDS_REMOVED.toString().replace("%amount%",
                         new DecimalFormat("#,###").format(amount)));
-                new DataManager(CosmicFunds.getInstance()).addMoney(player, amount);
+                plugin.getFundController().addMoney(player, amount);
             }
         } else {
             Message.FUNDS_NOT_ENOUGH.msg(player);
@@ -68,17 +73,17 @@ public class CosmicFundsCMD extends BaseCommand {
     @Subcommand("reload")
     @CommandPermission("CosmicFunds.reload")
     public void reloadFiles(CommandSender commandSender) {
-        CosmicFunds.getInstance().lang.reload();
+        CosmicFunds.getInstance().getLang().reload();
         CosmicFunds.getInstance().reloadConfig();
-        new DataManager(CosmicFunds.getInstance()).checkCompleted();
+        plugin.getFundController().reload();
+        plugin.getFundController().checkCompleted();
         Message.CONFIGURATION_RELOAD.msg(commandSender);
     }
 
     @Subcommand("reset")
     @CommandPermission("CosmicFunds.reset")
     public void resetFunds(CommandSender commandSender) {
-        CosmicFunds.getInstance().totalFunds = 0;
-        CosmicFunds.getInstance().saveTotal();
+        CosmicFunds.getInstance().getFundController().setTotalFunds(0);
         Message.FUNDS_RESET.msg(commandSender);
     }
 }
